@@ -5,6 +5,10 @@ inputs: #adding a input for this action by which user will have an option to cho
     description: 'whether to cache dependencies or not' #defines what the action does
     required: false # defines if this input is required or when using the action or not, true means required and action will fail if input not passed.
     default: 'true' # defines the default value if input not provided for this action.
+outputs: #defining output from the custom action
+  if-cache-used:
+    description: 'checking whether if the cache was used'
+    values: ${{ steps.install.ouputs.cache }} #getting the value of output from step level to check whether if the cache was used or not.
 runs:
   using: 'composite'
   steps:
@@ -16,6 +20,9 @@ runs:
         path: node_modules
         key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
+      install: 
       if: steps.cache.outputs.cache-hit != 'true' || inputs.caching != 'true' #using the inputs
-      run: npm ci
+      run: |
+        npm ci
+        echo "cache=${{ inputs.caching }}" >> ${{ GITHUB_ACTIONS }} 
       shell: bash
