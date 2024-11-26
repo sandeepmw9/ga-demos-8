@@ -8,7 +8,7 @@ inputs: #adding a input for this action by which user will have an option to cho
 outputs: #defining output from the custom action
   if-cache-used:
     description: 'checking whether if the cache was used'
-    values: ${{ steps.install.ouputs.cache }} #getting the value of output from step level to check whether if the cache was used or not.
+    value: ${{ steps.install.ouputs.cache }} #getting the value of output from step level to check whether if the cache was used or not.
 runs:
   using: 'composite'
   steps:
@@ -20,7 +20,7 @@ runs:
         path: node_modules
         key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
-      install: 
+      id: install 
       if: steps.cache.outputs.cache-hit != 'true' || inputs.caching != 'true' #using the inputs
       run: |
         npm ci
