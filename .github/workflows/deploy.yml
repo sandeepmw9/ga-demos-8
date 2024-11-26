@@ -15,7 +15,7 @@ jobs:
         with:
           caching: 'false' #passing inputs to custom action
       - name: output info
-        run: echo "cache used? ${{ steps.cache-deps.outputs.used-if-cache-used }}" #using the custom action output in main workflow
+        run: echo "cache used? ${{ steps.cache-deps.outputs.if-cache-used }}" #using the custom action output in main workflow
       - name: Lint code
         run: npm run lint
   test:
